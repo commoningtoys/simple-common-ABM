@@ -2,6 +2,7 @@ let community
 let cnv
 const happy_span = document.getElementById('happyness')
 const damage_span = document.getElementById('damage')
+const unusable_span = document.getElementById('unusable')
 function setup() {
   cnv = createCanvas(sizes.grid * sizes.cell, sizes.grid * sizes.cell);
   cnv.parent('p5')
@@ -26,6 +27,8 @@ function step(){
   happy_span.textContent = happyness
   const damage  = community.get_damaged_infrastructure().length
   damage_span.textContent = damage
+  const unusable  = community.get_unusable_infrastructure().length
+  unusable_span.textContent = unusable
 }
 
 function mouseClicked(){

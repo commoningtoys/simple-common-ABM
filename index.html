@@ -14,7 +14,8 @@
     <div id="p5"></div>
     <div class="info">
         <p>community happyness: <span id="happyness"></span>%</p>
-        <p>community damage: <span id="damage"></span> / <span id="total">900</span></p>
+        <p>community damage: <span id="damage"></span> / <span class="total">900</span></p>
+        <p>community unusable: <span id="unusable"></span> / <span class="total">900</span></p>
         <p>number of commoners: <span id="num-commoners">100</span></p>
         <input type="range" autocomplete="off" name="num-commoners" min="5" max="300" step="1" value="100"
             oninput="community_args.num_commoners = parseInt(this.value); set_label(this.name, this.value)"><br>

@@ -186,6 +186,12 @@ class Community {
     return damage
   }
 
+  get_unusable_infrastructure() {
+    const unusable = []
+    this.infrastructure.forEach(col => col.forEach(el => { if (el.consumed === true && el.usable === false) unusable.push(el) }))
+    return unusable
+  }
+
   check_infrastructure_usability() {
     this.infrastructure.forEach(col => col.forEach(el => { if (el.value > this.max_damage_value) el.usable = false }))
   }
