@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>simple-amtli</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="js/libraries/p5.min.js"></script>
+    <script src="js/utils.js"></script>
+</head>
+
+<body>
+    <div id="p5"></div>
+    <div class="info">
+        <p>community happyness: <span id="happyness"></span>%</p>
+        <p>community damage: <span id="damage"></span> / <span id="total">900</span></p>
+        <p>number of commoners: <span id="num-commoners">100</span></p>
+        <input type="range" autocomplete="off" name="num-commoners" min="5" max="300" step="1" value="100"
+            oninput="community_args.num_commoners = parseInt(this.value); set_label(this.name, this.value)"><br>
+        <p>monthly hours: <span id="monthly-hours">5</span></p>
+        <input type="range" autocomplete="off" name="monthly-hours" min="1" max="40" step="1" value="5"
+            oninput="community_args.monthly_hours = parseInt(this.value); set_label(this.name, this.value)"><br>
+        <p>maximum damage: <span id="max-damage-value">100</span></p>
+        <input type="range" autocomplete="off" name="max-damage-value"  min="50" max="300"
+            step="1" value="100" oninput="community_args.max_damage_value = parseInt(this.value); set_label(this.name, this.value)"><br>
+        <p>vision: <span id="vision">1</span></p>
+        <input type="range" autocomplete="off" name="vision"  min="1" max="10" step="1" value="1"
+            oninput="community_args.vision = parseInt(this.value); set_label(this.name, this.value)"><br>
+        <select autocomplete="off" name="trait" id="select-traits">
+            <option value="work">work</option>
+            <option value="swap">swap</option>
+            <option value="rest">rest</option>
+            <option value="mixed">mixed</option>
+        </select>
+        <button onclick="restart_model()">restart</button>
+    </div>
+    <script src="js/globals.js"></script>
+    <script src="js/community.js"></script>
+    <script src="js/commoner.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
