@@ -1,14 +1,14 @@
 class Community {
-/**
- * 
- * @param {Object} community_args {
-                                    num_commoners: Number, | amount of commoners
-                                    monthly_hours: Number, | hours the commoner needs to fulfill each month
-                                    max_damage_value: Number, | after how much damage a common is not usable
-                                    vision: Number, | how attentive the commoner is
-                                    commoners_trait: String | describes the decision the commoner may do
-                                }
- */
+  /**
+   * 
+   * @param {Object} community_args {
+                                      num_commoners: Number, | amount of commoners
+                                      monthly_hours: Number, | hours the commoner needs to fulfill each month
+                                      max_damage_value: Number, | after how much damage a common is not usable
+                                      vision: Number, | how attentive the commoner is
+                                      commoners_trait: String | describes the decision the commoner may do
+                                  }
+   */
   constructor(community_args) {
     this.monthly_hours = community_args.monthly_hours
 
@@ -21,7 +21,10 @@ class Community {
 
     this.max_damage_value = 255 + community_args.max_damage_value
     this.vision = community_args.vision
+    this.protestant = community_args.protestant()
     // this.display()
+
+    this.plot = new Plot(community_args.num_commoners)
   }
 
   init_infrastructure() {
@@ -60,7 +63,7 @@ class Community {
         noStroke()
         if (row.consumed || !row.usable) {
           fill(255, 0, 0)
-          if(!row.usable)fill(0)
+          if (!row.usable) fill(0)
         } else {
           fill(row.value, 255, 255)
         }
@@ -69,23 +72,22 @@ class Community {
       })
       x++
     })
+
   }
 
   use_infrastructure() {
-    // const positions = this.commoners.map(commoner => commoner.position)
     this.commoners.forEach(commoner => {
-      // console.log(position)
       const position = commoner.position
       this.infrastructure[position.x][position.y].value += 50
+      // check if the position is unusable, if yes happyness decreases
+      if (this.infrastructure[position.x][position.y].usable === false) {
+        commoner.reduce_happyness()
+      }
       // here we check whether infrastructure is consumed aka value over 255
       if (this.infrastructure[position.x][position.y].value > 255 && !this.infrastructure[position.x][position.y].consumed) {
         this.infrastructure[position.x][position.y].consumed = true
-        // this.damaged_infrastructure.push(position)
-        // noLoop()
-        // this.restore_infrastructure(position)
       }
     })
-    // console.log(positions);
   }
 
   restore_infrastructure() {
@@ -159,15 +161,25 @@ class Community {
 
   next_day() {
     this.check_infrastructure_usability()
+
+
+    if (this.days % 10 === 0) {
+    }
+
     this.days++
     this.commoners.forEach(commoner => commoner.resting = false)
     if (this.days % 31 === 0) {
+
+      this.set_plot_data()
+      this.plot.update_chart()
       this.commoners.forEach(commoner => {
 
-        commoner.monthly_hours_leftover()
+        if (this.protestant) commoner.monthly_hours_leftover()
         commoner.monthly_hours = this.monthly_hours
         commoner.done_for_the_month = false
         // console.log(commoner.get_actions_percentage());
+
+
       })
     }
   }
@@ -203,5 +215,13 @@ class Community {
   }
   show_commoners() {
     this.commoners.forEach(commoner => commoner.display())
+  }
+
+  set_plot_data() {
+    const avg_happyness = this.get_avg_happyness()
+    const damaged = (this.get_damaged_infrastructure().length / (sizes.grid * sizes.grid)) * 100
+    const unusable = (this.get_unusable_infrastructure().length / (sizes.grid * sizes.grid)) * 100
+    const commoners_happyness = this.commoners.map(commoner => commoner.happyness)
+    this.plot.set_data(avg_happyness, commoners_happyness, damaged, unusable, this.days)
   }
 }

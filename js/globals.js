@@ -6,9 +6,6 @@ const sizes = {
         for (const element of totals) {
             element.textContent = sizes.grid * sizes.grid
         }
-        // totals.forEach(element => {
-            
-        // })
     }
 }
 sizes.set_div()
@@ -20,6 +17,14 @@ const community_args = {
     monthly_hours: 5,
     max_damage_value: 100,
     vision: 1,
-    commoners_trait: 'work'
+    commoners_trait: 'work',
+    protestant: () => {
+        const protestant = document.getElementById('protestant')
+        if(protestant != undefined){
+            return protestant.checked
+        }else{
+            return false
+        }
+    }
 }
 
