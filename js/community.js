@@ -10,14 +10,20 @@ class Community {
                                   }
    */
   constructor(community_args) {
+
+    console.log(community_args);
+
     this.monthly_hours = community_args.monthly_hours
 
     this.commoners_trait = community_args.commoners_trait
 
+    this.collabirability = community_args.collabirability
+
     this.infrastructure = this.init_infrastructure()
-    this.commoners = this.init_commoners(community_args.num_commoners)
+    this.commoners = this.init_commoners(community_args.num_commoners, community_args.collabirability)
     this.damaged_infrastructure = []
     this.days = 1
+    this.hours = 1;
 
     this.max_damage_value = 255 + community_args.max_damage_value
     this.vision = community_args.vision
@@ -47,10 +53,10 @@ class Community {
     return arr
   }
 
-  init_commoners(num) {
+  init_commoners(num, collabirability) {
     const arr = []
     for (let i = 0; i < num; i++) {
-      arr[i] = new Commoner(this.commoners_trait, this.monthly_hours)
+      arr[i] = new Commoner(this.commoners_trait, collabirability, this.monthly_hours)
     }
     return arr
   }
@@ -78,10 +84,10 @@ class Community {
   use_infrastructure() {
     this.commoners.forEach(commoner => {
       const position = commoner.position
-      this.infrastructure[position.x][position.y].value += 50
+      this.infrastructure[position.x][position.y].value += 5
       // check if the position is unusable, if yes happyness decreases
       if (this.infrastructure[position.x][position.y].usable === false) {
-        commoner.reduce_happyness()
+        commoner.reduce_happyness(0.5)
       }
       // here we check whether infrastructure is consumed aka value over 255
       if (this.infrastructure[position.x][position.y].value > 255 && !this.infrastructure[position.x][position.y].consumed) {
@@ -133,30 +139,41 @@ class Community {
       // console.log('nooo....nobody is taking care of the community')
       return false
     }
-    let chosen_commoner
+    let chosen_commoner = []
     if (available.length > 1) {
-      chosen_commoner = this.solve_conflict(available)
+      this.solve_conflict(available)
+      // console.log(chosen_commoner);
     } else {
       // the commoner works and the infrastructure gets restored
       // the commoner uses one hour up and 
-      chosen_commoner = available[0]
+      available[0].work(0.5)
       // console.log('work', available)
     }
     // console.log(chosen_commoner)
     // chosen commoner uses his monthly hours
-    chosen_commoner.work()
+    // chosen_commoner.forEach(commoner => commoner.work())
+    // chosen_commoner.work()
     return true
   }
 
   solve_conflict(available) {
+
     // just pick a random agent and reduce the happyness of the other/s
-    const rand_idx = random_int(available.length)
-    const chosen = available[rand_idx]
-    // remove chosen from list
-    available.splice(rand_idx, 1)
-    // reduce happyness of commoners left out
-    available.forEach(commoner => commoner.reduce_happyness())
-    return chosen
+    const perc = Math.random()
+    if (perc <= this.collabirability) {
+      // console.log('collaborate');
+      const hours = 0.5 / available.length
+      available.forEach(commoner => commoner.work(hours))
+    } else {
+
+      // console.log('work alone');
+      const rand_idx = random_int(available.length)
+      available[rand_idx].work(0.5)
+      // remove chosen from list
+      available.splice(rand_idx, 1)
+      // reduce happyness of commoners left out
+      available.forEach(commoner => commoner.reduce_happyness(1))
+    }
   }
 
   next_day() {
@@ -166,12 +183,18 @@ class Community {
     if (this.days % 10 === 0) {
     }
 
-    this.days++
-    this.commoners.forEach(commoner => commoner.resting = false)
-    if (this.days % 31 === 0) {
+    this.hours++
+    if (this.hours % 13 == 0) {
+      this.hours = 1
+      this.days++
+      this.commoners.forEach(commoner => commoner.resting = false)
 
       this.set_plot_data()
       this.plot.update_chart()
+    }
+    if (this.days % 31 === 0) {
+      // this.set_plot_data()
+      // this.plot.update_chart()
       this.commoners.forEach(commoner => {
 
         if (this.protestant) commoner.monthly_hours_leftover()

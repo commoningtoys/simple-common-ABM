@@ -105,12 +105,12 @@ class Plot {
       transition: {
         duration: null
       },
-      onresize: () => {
-        this.chart.resize({
-          width: this.get_dims().w * 0.95,
-          height: this.get_dims().h * 0.95
-        })
-      }
+      // onresize: () => {
+      //   this.chart.resize({
+      //     width: this.get_dims().w * 0.95,
+      //     height: this.get_dims().h * 0.95
+      //   })
+      // }
     })
   }
 

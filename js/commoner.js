@@ -2,7 +2,7 @@ class Commoner {
   /**
    * @param {Object} trait object containing the tendency to work, swap or rest
    */
-  constructor(trait, monthly_hours) {
+  constructor(trait, collabirability, monthly_hours) {
     this.trait = trait || null
     this.position = {
       x: 0,
@@ -11,6 +11,8 @@ class Commoner {
     this.monthly_hours = monthly_hours
 
     this.happyness = random_int(100)
+
+    // this.collabirability = collabirability
 
     this.resting = false
     this.swapping = false
@@ -75,16 +77,17 @@ class Commoner {
     return actions[idx]
   }
 
-  reduce_happyness() {
-    this.happyness--
+  reduce_happyness(val) {
+    this.happyness -= val
+    if(this.happyness < 0) this.happyness = 0
   }
 
   monthly_hours_leftover() {
     this.happyness -= this.monthly_hours
   }
 
-  work() {
-    this.monthly_hours--
+  work(hours) {
+    this.monthly_hours -= hours
     if (this.monthly_hours <= 0) {
       this.done_for_the_month = true
     }

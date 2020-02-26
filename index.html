@@ -24,10 +24,13 @@
             <p>number of commoners: <span id="num-commoners">100</span></p>
             <input type="range" autocomplete="off" name="num-commoners" min="5" max="300" step="1" value="100"
                 oninput="community_args.num_commoners = parseInt(this.value); set_label(this.name, this.value)"><br>
+            <p>collabirability: <span id="collabirability">0.5</span></p>
+            <input type="range" autocomplete="off" name="collabirability" min="0" max="1" step="0.05" value="0.5"
+                oninput="community_args.collabirability = parseFloat(this.value); set_label(this.name, this.value); console.log(community_args);"><br>
             <p>monthly hours: <span id="monthly-hours">5</span></p>
             <input type="range" autocomplete="off" name="monthly-hours" min="1" max="40" step="1" value="5"
                 oninput="community_args.monthly_hours = parseInt(this.value); set_label(this.name, this.value)"><br>
-            <p>maximum damage: <span id="max-damage-value">100</span></p>
+            <p>infrastructure durability: <span id="max-damage-value">100</span></p>
             <input type="range" autocomplete="off" name="max-damage-value" min="50" max="300" step="1" value="100"
                 oninput="community_args.max_damage_value = parseInt(this.value); set_label(this.name, this.value)"><br>
             <p>vision: <span id="vision">1</span></p>
