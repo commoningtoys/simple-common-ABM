@@ -57,10 +57,12 @@ class Commoner {
       return 'work'
     } else {
       const action = this.decide_action();
+      console.log(action, this.trait);
       this.actions_memory.push(action)
       if (action === 'swap') {
         this.swapping = true
       } else if (action === 'rest') {
+        // console.log('rest');
         this.resting = true
         this.happyness++
       }

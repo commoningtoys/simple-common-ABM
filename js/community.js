@@ -163,7 +163,10 @@ class Community {
     if (perc <= this.collabirability) {
       // console.log('collaborate');
       const hours = 0.5 / available.length
-      available.forEach(commoner => commoner.work(hours))
+      available.forEach(commoner => {
+        commoner.work(hours)
+        commoner.happyness += 0.5
+      })
     } else {
 
       // console.log('work alone');
