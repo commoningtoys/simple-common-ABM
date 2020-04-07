@@ -2,16 +2,15 @@ class Commoner {
   /**
    * @param {Object} trait object containing the tendency to work, swap or rest
    */
-  constructor(trait, collabirability, monthly_hours) {
+  constructor(trait, collabirability, monthly_hours, id) {
     this.trait = trait || null
     this.position = {
       x: 0,
       y: 0
     }
     this.monthly_hours = monthly_hours
-
     this.happyness = random_int(100)
-
+    this.id = nf(id, 4)
     // this.collabirability = collabirability
 
     this.resting = false
@@ -57,7 +56,7 @@ class Commoner {
       return 'work'
     } else {
       const action = this.decide_action();
-      console.log(action, this.trait);
+      // console.log(action, this.trait);
       this.actions_memory.push(action)
       if (action === 'swap') {
         this.swapping = true
@@ -85,7 +84,11 @@ class Commoner {
   }
 
   monthly_hours_leftover() {
+    console.log('///////////////////////////');
+    console.log(this.monthly_hours, this.id);
+    console.log(this.happyness);
     this.happyness -= this.monthly_hours
+    console.log(this.happyness);
   }
 
   work(hours) {

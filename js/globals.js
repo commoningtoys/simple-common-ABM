@@ -18,7 +18,8 @@ const community_args = {
     monthly_hours: 5,
     max_damage_value: 100,
     vision: 1,
-    commoners_trait: 'work',
+    usage: 5,
+    commoners_trait: 'mixed',
     protestant: () => {
         const protestant = document.getElementById('protestant')
         if(protestant != undefined){

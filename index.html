@@ -21,28 +21,65 @@
             <p>community unusable: <span id="unusable"></span> / <span class="total">900</span></p>
         </div>
         <div class="settings">
+            <!-- 
+
+                NUMBER OF COMMONERS
+
+             -->
             <p>number of commoners: <span id="num-commoners">100</span></p>
             <input type="range" autocomplete="off" name="num-commoners" min="5" max="300" step="1" value="100"
                 oninput="community_args.num_commoners = parseInt(this.value); set_label(this.name, this.value)"><br>
+                <!-- 
+
+                    COLLABORABILITY
+
+                 -->
             <p>collabirability: <span id="collabirability">0.5</span></p>
             <input type="range" autocomplete="off" name="collabirability" min="0" max="1" step="0.05" value="0.5"
                 oninput="community_args.collabirability = parseFloat(this.value); set_label(this.name, this.value); console.log(community_args);"><br>
+                <!-- 
+
+                    MONTHLY HOURS
+
+                 -->
             <p>monthly hours: <span id="monthly-hours">5</span></p>
-            <input type="range" autocomplete="off" name="monthly-hours" min="1" max="40" step="1" value="5"
-                oninput="community_args.monthly_hours = parseInt(this.value); set_label(this.name, this.value)"><br>
+            <input type="range" autocomplete="off" name="monthly-hours" min="1" max="5" step="0.5" value="5"
+                oninput="community_args.monthly_hours = parseFloat(this.value); set_label(this.name, this.value)"><br>
+                <!-- 
+
+                    INFRASTRUCTURE DURABILITY
+
+                 -->
             <p>infrastructure durability: <span id="max-damage-value">100</span></p>
             <input type="range" autocomplete="off" name="max-damage-value" min="10" max="300" step="1" value="100"
                 oninput="community_args.max_damage_value = parseInt(this.value); set_label(this.name, this.value)"><br>
+                <!-- 
+
+                    USAGE
+
+                 -->
+            <p>usage: <span id="usage">5</span></p>
+            <input type="range" autocomplete="off" name="usage" min="5" max="25" step="1" value="5"
+                oninput="community_args.usage = parseInt(this.value); set_label(this.name, this.value)"><br>
+                <!-- 
+
+                    VISION
+
+                 -->
             <p>vision: <span id="vision">1</span></p>
             <input type="range" autocomplete="off" name="vision" min="1" max="10" step="1" value="1"
                 oninput="community_args.vision = parseInt(this.value); set_label(this.name, this.value)"><br>
+                 <!-- 
 
+                    PROTESTANT?
+
+                  -->
             <input type="checkbox" name="protestant" id="protestant"> <label for="protestant">protestant?</label>
             <select autocomplete="off" name="trait" id="select-traits">
+                <option value="mixed">mixed</option>
                 <option value="work">work</option>
                 <option value="swap">swap</option>
                 <option value="rest">rest</option>
-                <option value="mixed">mixed</option>
             </select>
             <div class="btn" onclick="restart_model()">restart</div>
             <div class="btn" onclick="noLoop()">stop</div>

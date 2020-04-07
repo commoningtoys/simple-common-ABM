@@ -3,3 +3,4 @@
 
 ## TO DO:
 * [ ] when a group of commoners 4+ are around an unusable common they will join the forces and repair it; they will lose some happyness and become unavailabble for the whole month
+* [ ] add done for the day possibility, similar to protestant

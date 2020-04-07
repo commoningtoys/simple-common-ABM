@@ -11,13 +11,22 @@ class Community {
    */
   constructor(community_args) {
 
-    console.log(community_args);
-
     this.monthly_hours = community_args.monthly_hours
 
     this.commoners_trait = community_args.commoners_trait
 
     this.collabirability = community_args.collabirability
+
+    this.usage = community_args.usage
+
+    this.damage_threshold = 255
+
+
+    this.colors = {
+      healty: color('#80dd80'),
+      damaged: color('#f00'),
+      unusable: color('#eee')
+    }
 
     this.infrastructure = this.init_infrastructure()
     this.commoners = this.init_commoners(community_args.num_commoners, community_args.collabirability)
@@ -56,7 +65,7 @@ class Community {
   init_commoners(num, collabirability) {
     const arr = []
     for (let i = 0; i < num; i++) {
-      arr[i] = new Commoner(this.commoners_trait, collabirability, this.monthly_hours)
+      arr[i] = new Commoner(this.commoners_trait, collabirability, this.monthly_hours, i)
     }
     return arr
   }
@@ -68,10 +77,11 @@ class Community {
       col.forEach(row => {
         noStroke()
         if (row.consumed || !row.usable) {
-          fill(255, 0, 0)
-          if (!row.usable) fill(0)
+          fill(this.colors.damaged)
+          if (!row.usable) fill(this.colors.unusable)
         } else {
-          fill(row.value, 255, 255)
+          const col = lerpColor(this.colors.healty, this.colors.damaged, row.value / this.damage_threshold)
+          fill(col, 255, 255)
         }
         square(x * sizes.cell, y * sizes.cell, sizes.cell)
         y++
@@ -84,13 +94,13 @@ class Community {
   use_infrastructure() {
     this.commoners.forEach(commoner => {
       const position = commoner.position
-      this.infrastructure[position.x][position.y].value += 5
+      this.infrastructure[position.x][position.y].value += this.usage
       // check if the position is unusable, if yes happyness decreases
       if (this.infrastructure[position.x][position.y].usable === false) {
         commoner.reduce_happyness(0.5)
       }
       // here we check whether infrastructure is consumed aka value over 255
-      if (this.infrastructure[position.x][position.y].value > 255 && !this.infrastructure[position.x][position.y].consumed) {
+      if (this.infrastructure[position.x][position.y].value > this.damage_threshold && !this.infrastructure[position.x][position.y].consumed) {
         this.infrastructure[position.x][position.y].consumed = true
       }
     })
@@ -195,7 +205,7 @@ class Community {
       this.set_plot_data()
       this.plot.update_chart()
     }
-    if (this.days % 31 === 0) {
+    if (this.days % 31 === 0 && this.hours % 13 == 1) {
       // this.set_plot_data()
       // this.plot.update_chart()
       this.commoners.forEach(commoner => {
@@ -204,8 +214,6 @@ class Community {
         commoner.monthly_hours = this.monthly_hours
         commoner.done_for_the_month = false
         // console.log(commoner.get_actions_percentage());
-
-
       })
     }
   }
