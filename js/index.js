@@ -1,6 +1,6 @@
 let community
 let cnv
-const happy_span = document.getElementById('happyness')
+const happy_span = document.getElementById('happiness')
 const damage_span = document.getElementById('damage')
 const unusable_span = document.getElementById('unusable')
 function setup() {
@@ -23,8 +23,8 @@ function step(){
   community.show_commoners()
   community.next_day()
 
-  const happyness = community.get_avg_happyness()
-  happy_span.textContent = happyness
+  const happiness = community.get_avg_happiness()
+  happy_span.textContent = happiness
   const damage  = community.get_damaged_infrastructure().length
   damage_span.textContent = damage
   const unusable  = community.get_unusable_infrastructure().length

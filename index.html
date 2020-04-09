@@ -16,7 +16,7 @@
 <body>
     <div class="menu">
         <div class="statistics box">
-            <p>community happyness: <span id="happyness"></span>%</p>
+            <p>community happiness: <span id="happiness"></span>%</p>
             <p>community damage: <span id="damage"></span> / <span class="total">900</span></p>
             <p>community unusable: <span id="unusable"></span> / <span class="total">900</span></p>
         </div>
@@ -34,16 +34,16 @@
                     COLLABORABILITY
 
                  -->
-            <p>collabirability: <span id="collabirability">0.5</span></p>
-            <input type="range" autocomplete="off" name="collabirability" min="0" max="1" step="0.05" value="0.5"
-                oninput="community_args.collabirability = parseFloat(this.value); set_label(this.name, this.value); console.log(community_args);"><br>
+            <p>collaborability: <span id="collaborability">0.5</span></p>
+            <input type="range" autocomplete="off" name="collaborability" min="0" max="1" step="0.05" value="0.5"
+                oninput="community_args.collaborability = parseFloat(this.value); set_label(this.name, this.value); console.log(community_args);"><br>
                 <!-- 
 
                     MONTHLY HOURS
 
                  -->
             <p>monthly hours: <span id="monthly-hours">5</span></p>
-            <input type="range" autocomplete="off" name="monthly-hours" min="1" max="5" step="0.5" value="5"
+            <input type="range" autocomplete="off" name="monthly-hours" min="1" max="10" step="0.5" value="5"
                 oninput="community_args.monthly_hours = parseFloat(this.value); set_label(this.name, this.value)"><br>
                 <!-- 
 

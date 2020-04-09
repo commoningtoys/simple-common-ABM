@@ -15,7 +15,7 @@ class Community {
 
     this.commoners_trait = community_args.commoners_trait
 
-    this.collabirability = community_args.collabirability
+    this.collaborability = community_args.collaborability
 
     this.usage = community_args.usage
 
@@ -23,13 +23,13 @@ class Community {
 
 
     this.colors = {
-      healty: color('#80dd80'),
-      damaged: color('#f00'),
-      unusable: color('#eee')
+      healty: color('#fff'),//#80dd80
+      damaged: color('#000'),
+      unusable: color('#f33')
     }
 
     this.infrastructure = this.init_infrastructure()
-    this.commoners = this.init_commoners(community_args.num_commoners, community_args.collabirability)
+    this.commoners = this.init_commoners(community_args.num_commoners, community_args.collaborability)
     this.damaged_infrastructure = []
     this.days = 1
     this.hours = 1;
@@ -62,10 +62,10 @@ class Community {
     return arr
   }
 
-  init_commoners(num, collabirability) {
+  init_commoners(num, collaborability) {
     const arr = []
     for (let i = 0; i < num; i++) {
-      arr[i] = new Commoner(this.commoners_trait, collabirability, this.monthly_hours, i)
+      arr[i] = new Commoner(this.commoners_trait, collaborability, this.monthly_hours, i)
     }
     return arr
   }
@@ -75,12 +75,13 @@ class Community {
     this.infrastructure.forEach(col => {
       let y = 0
       col.forEach(row => {
-        noStroke()
+        stroke(0)
         if (row.consumed || !row.usable) {
           fill(this.colors.damaged)
           if (!row.usable) fill(this.colors.unusable)
         } else {
-          const col = lerpColor(this.colors.healty, this.colors.damaged, row.value / this.damage_threshold)
+          const val = Math.floor(Math.pow((row.value / this.damage_threshold), 2) * 10) / 10
+          const col = lerpColor(this.colors.healty, this.colors.damaged, val)
           fill(col, 255, 255)
         }
         square(x * sizes.cell, y * sizes.cell, sizes.cell)
@@ -95,9 +96,9 @@ class Community {
     this.commoners.forEach(commoner => {
       const position = commoner.position
       this.infrastructure[position.x][position.y].value += this.usage
-      // check if the position is unusable, if yes happyness decreases
+      // check if the position is unusable, if yes happiness decreases
       if (this.infrastructure[position.x][position.y].usable === false) {
-        commoner.reduce_happyness(0.5)
+        commoner.reduce_happiness(0.5)
       }
       // here we check whether infrastructure is consumed aka value over 255
       if (this.infrastructure[position.x][position.y].value > this.damage_threshold && !this.infrastructure[position.x][position.y].consumed) {
@@ -168,14 +169,14 @@ class Community {
 
   solve_conflict(available) {
 
-    // just pick a random agent and reduce the happyness of the other/s
+    // just pick a random agent and reduce the happiness of the other/s
     const perc = Math.random()
-    if (perc <= this.collabirability) {
+    if (perc <= this.collaborability) {
       // console.log('collaborate');
       const hours = 0.5 / available.length
       available.forEach(commoner => {
         commoner.work(hours)
-        commoner.happyness += 0.5
+        commoner.happiness += 0.5
       })
     } else {
 
@@ -184,8 +185,8 @@ class Community {
       available[rand_idx].work(0.5)
       // remove chosen from list
       available.splice(rand_idx, 1)
-      // reduce happyness of commoners left out
-      available.forEach(commoner => commoner.reduce_happyness(1))
+      // reduce happiness of commoners left out
+      available.forEach(commoner => commoner.reduce_happiness(1))
     }
   }
 
@@ -218,12 +219,12 @@ class Community {
     }
   }
 
-  get_avg_happyness() {
-    const happyness = this.commoners.map(commoner => commoner.happyness)
-    // console.log(happyness);
-    const sum_happyness = happyness.reduce((acc, val) => acc + val, 0)
-    // console.log(sum_happyness / this.commoners.length);
-    return sum_happyness / this.commoners.length
+  get_avg_happiness() {
+    const happiness = this.commoners.map(commoner => commoner.happiness)
+    // console.log(happiness);
+    const sum_happiness = happiness.reduce((acc, val) => acc + val, 0)
+    // console.log(sum_happiness / this.commoners.length);
+    return sum_happiness / this.commoners.length
   }
 
   get_damaged_infrastructure() {
@@ -251,11 +252,15 @@ class Community {
     this.commoners.forEach(commoner => commoner.display())
   }
 
+  show_commoners_happiness(){
+    this.commoners.forEach(commoner => commoner.show_happiness())
+  }
+
   set_plot_data() {
-    const avg_happyness = this.get_avg_happyness()
+    const avg_happiness = this.get_avg_happiness()
     const damaged = (this.get_damaged_infrastructure().length / (sizes.grid * sizes.grid)) * 100
     const unusable = (this.get_unusable_infrastructure().length / (sizes.grid * sizes.grid)) * 100
-    const commoners_happyness = this.commoners.map(commoner => commoner.happyness)
-    this.plot.set_data(avg_happyness, commoners_happyness, damaged, unusable, this.days)
+    const commoners_happiness = this.commoners.map(commoner => commoner.happiness)
+    this.plot.set_data(avg_happiness, commoners_happiness, damaged, unusable, this.days)
   }
 }

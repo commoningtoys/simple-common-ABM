@@ -2,16 +2,16 @@ class Commoner {
   /**
    * @param {Object} trait object containing the tendency to work, swap or rest
    */
-  constructor(trait, collabirability, monthly_hours, id) {
+  constructor(trait, collaborability, monthly_hours, id) {
     this.trait = trait || null
     this.position = {
       x: 0,
       y: 0
     }
     this.monthly_hours = monthly_hours
-    this.happyness = random_int(100)
+    this.happiness = random_int(100)
     this.id = nf(id, 4)
-    // this.collabirability = collabirability
+    // this.collaborability = collaborability
 
     this.resting = false
     this.swapping = false
@@ -23,6 +23,16 @@ class Commoner {
       rest: [0, 1, 2, 2, 2, 2, 2, 2],
       mixed: [0, 1, 2]
     }
+
+    this.colors = {
+      swap: '#f8f',
+      done_for_the_month: '#0ff',
+      resting: '#fc0',
+      work: '#33f'
+    }
+
+
+    this.flip_view = false
 
     this.actions_memory = []
     this.init();
@@ -63,13 +73,13 @@ class Commoner {
       } else if (action === 'rest') {
         // console.log('rest');
         this.resting = true
-        this.happyness++
+        this.happiness++
       }
       return action
     }
   }
 
-  decide_action(){
+  decide_action() {
     // console.log(this.probabilities[this.trait]);
     const probability = this.probabilities[this.trait]
     const prob_idx = random_int(probability.length)
@@ -78,17 +88,17 @@ class Commoner {
     return actions[idx]
   }
 
-  reduce_happyness(val) {
-    this.happyness -= val
-    if(this.happyness < 0) this.happyness = 0
+  reduce_happiness(val) {
+    this.happiness -= val
+    if (this.happiness < 0) this.happiness = 0
   }
 
   monthly_hours_leftover() {
     console.log('///////////////////////////');
     console.log(this.monthly_hours, this.id);
-    console.log(this.happyness);
-    this.happyness -= this.monthly_hours
-    console.log(this.happyness);
+    console.log(this.happiness);
+    this.happiness -= this.monthly_hours
+    console.log(this.happiness);
   }
 
   work(hours) {
@@ -98,24 +108,42 @@ class Commoner {
     }
   }
 
-  get_actions_percentage(){
+  get_actions_percentage() {
     const work = (this.actions_memory.filter(memory => memory === 'work').length / this.actions_memory.length) * 100
     const swap = (this.actions_memory.filter(memory => memory === 'swap').length / this.actions_memory.length) * 100
     const rest = (this.actions_memory.filter(memory => memory === 'rest').length / this.actions_memory.length) * 100
-    return {work, swap, rest}
+    return { work, swap, rest }
+  }
+
+  show_happiness(){
+    this.flip_view = !this.flip_view
   }
 
   display() {
-    noStroke()
-    if (this.done_for_the_month) {
-      fill(255, 255, 120)
-    } else if(this.resting){
-      fill(0, 255, 0)
-    }else if(this.swapping){
-      fill(255, 120, 255)
-    }else{
-      fill(0, 0, 255)
+
+
+      noStroke()
+      if (this.done_for_the_month) {
+        fill(this.colors.done_for_the_month)
+      } else if (this.resting) {
+        fill(this.colors.resting)
+      } else if (this.swapping) {
+        fill(this.colors.swap)
+      } else {
+        fill(this.colors.work)
+      }
+      ellipse((this.position.x * sizes.cell) + (sizes.cell / 2), (this.position.y * sizes.cell) + (sizes.cell / 2), sizes.cell * 0.9)
+
+
+
+    if (this.flip_view) {
+
+    let face = '🥳'
+    if (this.happiness < 50) {
+      face = '😭'
     }
-    ellipse((this.position.x * sizes.cell) + (sizes.cell / 2), (this.position.y * sizes.cell) + (sizes.cell / 2), sizes.cell * 0.9)
+    textSize(sizes.cell)
+    text(face, this.position.x * sizes.cell, sizes.cell + (this.position.y * sizes.cell))
+    }
   }
 }
