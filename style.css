@@ -56,11 +56,19 @@ select {
 button {
     font-family: Courier, monospace;
 }
-
+p{
+	margin: 0;
+	padding: 0.5rem 0 0.5rem 0;
+	border: 0;
+	font-size: 1rem;
+	font: inherit;
+	vertical-align: baseline;
+}
 .title{
     font-size: 2rem;
 }
 .rotated-title{
+    z-index: 999999;
     width: 100vh;
     font-size: 2rem;
     transform: rotate(90deg);
@@ -116,6 +124,7 @@ button {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    /* filter: blur(1px); */
 }
 
 .abm {
@@ -131,7 +140,8 @@ button {
     width: 200px;
     height: 100vh;
     border-left: solid 2px #000;
-    background-color: #cccd;
+    background-color: #ccc3;
+    
 }
 #drag-bar{
     cursor: ew-resize;

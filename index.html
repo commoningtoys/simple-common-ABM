@@ -2,107 +2,108 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>simple-amtli</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="c3.min.css">
-    <script src="js/libraries/d3.min.js"></script>
-    <script src="js/libraries/c3.min.js"></script>
-    <script src="js/libraries/p5.min.js"></script>
-    <script src="js/utils.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>simple-amtli</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="c3.min.css">
+  <script src="js/libraries/d3.min.js"></script>
+  <script src="js/libraries/c3.min.js"></script>
+  <script src="js/libraries/p5.min.js"></script>
+  <script src="js/utils.js"></script>
 </head>
 
 <body>
-    <div class="menu">
-        <div class="statistics box">
-            <p>community happiness: <span id="happiness"></span>%</p>
-            <p>community damage: <span id="damage"></span> / <span class="total">900</span></p>
-            <p>community unusable: <span id="unusable"></span> / <span class="total">900</span></p>
-        </div>
-        <div class="settings">
-            <!-- 
+  <div class="menu">
+    <div class="statistics box">
+      <p>community happiness: <br> <span id="happiness"></span>%</p>
+      <p>community damage:<br> <span id="damage"></span> / <span class="total">900</span></p>
+      <p>community unusable:<br> <span id="unusable"></span> / <span class="total">900</span></p>
+    </div>
+    <div class="settings">
+      <!-- 
 
                 NUMBER OF COMMONERS
 
              -->
-            <p>number of commoners: <span id="num-commoners">100</span></p>
-            <input type="range" autocomplete="off" name="num-commoners" min="5" max="300" step="1" value="100"
-                oninput="community_args.num_commoners = parseInt(this.value); set_label(this.name, this.value)"><br>
-                <!-- 
+      <p>number of commoners: <span id="num-commoners">100</span></p>
+      <input type="range" autocomplete="off" name="num-commoners" min="5" max="300" step="1" value="100"
+        oninput="community_args.num_commoners = parseInt(this.value); set_label(this.name, this.value)"><br>
+      <!-- 
 
                     COLLABORABILITY
 
                  -->
-            <p>collaborability: <span id="collaborability">0.5</span></p>
-            <input type="range" autocomplete="off" name="collaborability" min="0" max="1" step="0.05" value="0.5"
-                oninput="community_args.collaborability = parseFloat(this.value); set_label(this.name, this.value); console.log(community_args);"><br>
-                <!-- 
+      <p>collaborability: <span id="collaborability">0.5</span></p>
+      <input type="range" autocomplete="off" name="collaborability" min="0" max="1" step="0.05" value="0.5"
+        oninput="community_args.collaborability = parseFloat(this.value); set_label(this.name, this.value); console.log(community_args);"><br>
+      <!-- 
 
                     MONTHLY HOURS
 
                  -->
-            <p>monthly hours: <span id="monthly-hours">5</span></p>
-            <input type="range" autocomplete="off" name="monthly-hours" min="1" max="10" step="0.5" value="5"
-                oninput="community_args.monthly_hours = parseFloat(this.value); set_label(this.name, this.value)"><br>
-                <!-- 
+      <p>monthly hours: <span id="monthly-hours">5</span></p>
+      <input type="range" autocomplete="off" name="monthly-hours" min="1" max="10" step="0.5" value="5"
+        oninput="community_args.monthly_hours = parseFloat(this.value); set_label(this.name, this.value)"><br>
+      <!-- 
 
                     INFRASTRUCTURE DURABILITY
 
                  -->
-            <p>infrastructure durability: <span id="max-damage-value">100</span></p>
-            <input type="range" autocomplete="off" name="max-damage-value" min="10" max="300" step="1" value="100"
-                oninput="community_args.max_damage_value = parseInt(this.value); set_label(this.name, this.value)"><br>
-                <!-- 
+      <p>infrastructure durability: <span id="max-damage-value">100</span></p>
+      <input type="range" autocomplete="off" name="max-damage-value" min="10" max="300" step="1" value="100"
+        oninput="community_args.max_damage_value = parseInt(this.value); set_label(this.name, this.value)"><br>
+      <!-- 
 
                     USAGE
 
                  -->
-            <p>usage: <span id="usage">5</span></p>
-            <input type="range" autocomplete="off" name="usage" min="5" max="25" step="1" value="5"
-                oninput="community_args.usage = parseInt(this.value); set_label(this.name, this.value)"><br>
-                <!-- 
+      <p>usage: <span id="usage">5</span></p>
+      <input type="range" autocomplete="off" name="usage" min="5" max="25" step="1" value="5"
+        oninput="community_args.usage = parseInt(this.value); set_label(this.name, this.value)"><br>
+      <!-- 
 
                     VISION
 
                  -->
-            <p>vision: <span id="vision">1</span></p>
-            <input type="range" autocomplete="off" name="vision" min="1" max="10" step="1" value="1"
-                oninput="community_args.vision = parseInt(this.value); set_label(this.name, this.value)"><br>
-                 <!-- 
+      <p>vision: <span id="vision">1</span></p>
+      <input type="range" autocomplete="off" name="vision" min="1" max="10" step="1" value="1"
+        oninput="community_args.vision = parseInt(this.value); set_label(this.name, this.value)"><br>
+      <!-- 
 
                     PROTESTANT?
 
                   -->
-            <input type="checkbox" name="protestant" id="protestant"> <label for="protestant">protestant?</label>
-            <select autocomplete="off" name="trait" id="select-traits">
-                <option value="mixed">mixed</option>
-                <option value="work">work</option>
-                <option value="swap">swap</option>
-                <option value="rest">rest</option>
-            </select>
-            <div class="btn" onclick="restart_model()">restart</div>
-            <div class="btn" onclick="noLoop()">stop</div>
-            <div class="btn" onclick="loop()">start</div>
-        </div>
+      <input type="checkbox" name="protestant" id="protestant"> <label for="protestant">protestant?</label>
+      <select autocomplete="off" name="trait" id="select-traits">
+        <option value="mixed">mixed</option>
+        <option value="work">work</option>
+        <option value="swap">swap</option>
+        <option value="rest">rest</option>
+      </select>
+      <div class="btn" onclick="restart_model()">restart</div>
+      <div class="btn" onclick="noLoop()">stop</div>
+      <div class="btn" onclick="loop()">start</div>
     </div>
-    <div class="main">
+  </div>
+  <div class="main">
     <div class="abm" id="p5"></div>
+  </div>
+  <div class="data-viz">
+    <div id="drag-bar">
     </div>
-    <div class="data-viz">
-        <div id="drag-bar">
-        </div>
-        <div class="rotated-title">
-            data visualization
-        </div>
-        <div class="chart" id="chart"></div>
+    <div class="rotated-title">
+      <p>data visualization</p>
+      <input type="range" name="bg" id="bg" min="0" max="1" step="0.1" oninput="change_alpha(this)">
     </div>
-    <script src="js/scripts.js"></script>
-    <script src="js/globals.js"></script>
-    <script src="js/community.js"></script>
-    <script src="js/commoner.js"></script>
-    <script src="js/plot.js"></script>
-    <script src="js/index.js"></script>
+    <div class="chart" id="chart"></div>
+  </div>
+  <script src="js/scripts.js"></script>
+  <script src="js/globals.js"></script>
+  <script src="js/community.js"></script>
+  <script src="js/commoner.js"></script>
+  <script src="js/plot.js"></script>
+  <script src="js/index.js"></script>
 </body>
 
 </html>

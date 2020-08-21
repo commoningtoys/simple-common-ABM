@@ -15,3 +15,10 @@ document.onmouseup = (e) => {
     document.removeEventListener('mousemove', expand_div)
 }
 
+const change_alpha = (el) => {
+    console.log(typeof el.value)
+    // const viz_bg = document.querySelector('.data-viz')
+    // data_viz_div.style.backdropFilter = `blur(${el.value}px)`
+    data_viz_div.style.backgroundColor = `rgba(204, 204, 204, ${el.value})`
+    // data_viz_div.setAttribute('style', `rgba(204, 204, 204, ${el.value})`)
+}
